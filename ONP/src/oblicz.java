@@ -17,6 +17,7 @@ public class oblicz {
 		index = wyrazenie.indexOf(" ");
 		while (index != -1) {
 			temp = wyrazenie.substring(0, index);
+			System.out.println(temp);
 			if (czyDouble(temp)) {
 				stos.push(Double.valueOf(temp));
 				wyrazenie = wyrazenie.substring(index + 1, wyrazenie.length());
@@ -24,8 +25,9 @@ public class oblicz {
 				index = wyrazenie.indexOf(" ");
 			} else if (czyOperator(temp) && stos.size() > 1) {
 				operacja(temp);
+				System.out.println(temp);
 			} else {
-				System.out.println("Złe wyrażenie");
+				System.out.println(temp);
 				index=-1;
 			}
 
