@@ -1,45 +1,34 @@
 import java.util.Stack;
-import java.lang.*;
+
+import java.util.StringTokenizer;
 
 public class oblicz {
-	private int licznik = 0;
-	// private String wyrazenie;
-	double wynik = 0;
-	int index;
-	String temp = "";
-	Stack<Double> stos = new Stack<>();
+	private double wynik = 0;
+	private boolean index = true;
+	private String temp = "";
+	private Stack<Double> stos = new Stack<>();
 
 	public oblicz(String wyrazenie) {
 		this.rozklad(wyrazenie);
 	}
 
 	private void rozklad(String wyrazenie) {
-		index = wyrazenie.indexOf(" ");
-		while (index != -1) {
-			temp = wyrazenie.substring(0, index);
-			// index = wyrazenie.indexOf(" ");
-			// System.out.println("wczytałem znak: "+temp);
+		StringTokenizer st = new StringTokenizer(wyrazenie, " ");
+		while (st.hasMoreElements() && index) {
+			temp = st.nextToken();
 			if (czyDouble(temp)) {
 				stos.push(Double.valueOf(temp));
-				wyrazenie = wyrazenie.substring(index + 1, wyrazenie.length());
-				licznik++;
-				System.out.println("spacja na poz: " + index);
 			} else if (czyOperator(temp) && stos.size() > 1) {
-				System.out.println("czy operator" + temp);
 				operacja(temp);
 			} else {
-				System.out.println("else" + temp);
-				index = -1;
+				index = false;
 			}
-			System.out.println("poza ifami " + temp + " wielk. stosu: " + stos.size());
 		}
-		if (index == -1 && licznik > 1) {
-			System.out.println("else if");
+		if (index && stos.size() == 1) {
 			wynik = stos.pop();
-			System.out.println("licznik:" + licznik + "Wynikiiii : " + wynik);
-		} else{
-			System.out.println("Złe wyrażenie");
-		}
+			System.out.println("Wynik : " + wynik);
+		} else
+			System.out.println("Wprowadzono złe wyrażenie");
 	}
 
 	private boolean czyDouble(String s) {
@@ -63,28 +52,16 @@ public class oblicz {
 	private void operacja(String s) {
 		switch (s) {
 		case ("+"):
-			System.out.println("dodaje");
 			stos.push(stos.pop() + stos.pop());
-			System.out.println("peek" + stos.peek());
-			// licznik--;
 			break;
 		case ("-"):
-			System.out.println("odejmuje");
-			stos.push(stos.pop() - stos.pop());
-			System.out.println("peek" + stos.peek());
-			// licznik--;
+			stos.push(-stos.pop() + stos.pop());
 			break;
 		case ("*"):
-			System.out.println("mnożę");
 			stos.push(stos.pop() * stos.pop());
-			System.out.println("peek" + stos.peek());
-			// licznik--;
 			break;
 		case ("/"):
-			System.out.println("dziele");
-			stos.push(stos.pop() / stos.pop());
-			System.out.println("peek" + stos.peek());
-			// licznik--;
+			stos.push((1 / stos.pop()) * stos.pop());
 			break;
 		}
 	}
